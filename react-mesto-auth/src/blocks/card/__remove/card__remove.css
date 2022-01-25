@@ -1,0 +1,12 @@
+.card__remove{
+position: absolute;
+border: none;
+z-index: 1;
+padding: 0;
+width: 18px;
+height: 19.3px;
+background: url("../../../images/icons/card-remove.svg") no-repeat center;
+margin-top: 18px;
+margin-right: 15px;
+}
+

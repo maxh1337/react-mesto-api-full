@@ -1,0 +1,41 @@
+{
+  "name": "express-mesto",
+  "version": "1.0.0",
+  "description": "Web Dev hard ",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxh1337/express-mesto.git"
+  },
+  "author": "Maksim Vorobev 2022",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxh1337/express-mesto/issues"
+  },
+  "homepage": "https://github.com/maxh1337/express-mesto#readme",
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "express-winston": "^4.2.0",
+    "helmet": "^5.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.6",
+    "validator": "^13.7.0",
+    "winston": "^3.4.0"
+  }
+}
