@@ -1,45 +1,54 @@
-export const BASE_URL = 'https://api.maxh.student.nomoredomains.rocks';
+class Auth {
+  constructor(baseUrl) {
+    this.baseUrl = baseUrl;
+  }
 
-function handleResponse(res) {
-  if (res.ok) {
-    return res.json();
-  };
+  _checkResponse(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Ошибка ${res.status}`);
+  }
 
-  return Promise.reject(`Ошибка: ${res.status}`);
-};
+  registration({ email, password }) {
+    return fetch(`${this.baseUrl}/signup`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password, email }),
+    }).then(this._checkResponse);
+  }
 
-export const register = (email, password) => {
-  return fetch(`${BASE_URL}/signup`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password })
-  })
-  .then(handleResponse);
-};
+  authorization({ email, password }) {
+    return fetch(`${this.baseUrl}/signin`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ password, email }),
+    }).then(this._checkResponse);
+  }
 
-export const authorize = (email, password) => {
-  return fetch(`${BASE_URL}/signin`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password })
-  })
-  .then(handleResponse);
-};
+  checkToken() {
+    return fetch(`${this.baseUrl}/users/me`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(this._checkResponse);
+  }
 
-export const checkToken = (token) => {
-  return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization : `Bearer ${token}`,
-    },
-  })
-  .then(handleResponse);
-};
+  signOut() {
+    return fetch(`${this.baseUrl}/users/signout`, {
+      credentials: 'include',
+    }).then(this._checkResponse);
+  }
+}
+
+const auth = new Auth('https://api.maxh.student.nomoredomains.rocks');
+
+export default auth;

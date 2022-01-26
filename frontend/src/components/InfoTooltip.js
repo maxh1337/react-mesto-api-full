@@ -1,19 +1,28 @@
-import React from "react";
-import successIcon from '../images/success-icon.svg';
-import errorIcon from '../images/error-icon.svg'
+import successImg from '../images/success.svg';
+import failImg from '../images/fail.svg';
 
-function InfoTooltip(props) {
+function InfoTooltip({ isResponseFail, isOpen, onClose }) {
+  const srcImg = isResponseFail ? failImg : successImg;
+  const title = isResponseFail
+    ? 'Что-то пошло не так! Попробуйте ещё раз.'
+    : 'Вы успешно зарегистрировались!';
   return (
-    <section className={props.isOpen ? `popup popup_opened` : `popup`}>
+    <div className={`popup ${isOpen ? 'popup_is-opened' : ''}`}>
       <div className="popup__container">
-        <img className="popup__image-status" src={props.onState ? successIcon : errorIcon} alt="Уведомление" />
-        <h2 className="popup__message-status">
-          {props.onState ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте ещё раз.'}
-        </h2>
-        <button type="button" className="popup__close-button" aria-label="Закрыть" onClick={props.onClose} />
+        <button
+          onClick={onClose}
+          type="button"
+          className="popup__close-btn btn-hover"
+        />
+        <img
+          className="popup__result-img"
+          src={srcImg}
+          alt="Результат запроса"
+        />
+        <p className="popup__title">{title}</p>
       </div>
-    </section>
+    </div>
   );
-};
+}
 
 export default InfoTooltip;

@@ -1,6 +1,3 @@
 .popup__figure {
-  position: relative;
-
-  margin: auto;
-  font-size: 0;
+  margin: 0;
 }

@@ -5,3 +5,5 @@
 
 Frontend - istupidsoiwontpassdiplom.nomoredomains.rocks
 Backend - api.maxh.student.nomoredomains.rocks
+
+Ip - 84.201.134.231

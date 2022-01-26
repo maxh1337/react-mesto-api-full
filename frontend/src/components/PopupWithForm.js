@@ -1,20 +1,32 @@
-import React from "react";
+function PopupWithForm(props) {
+  const submitBtnCaptionIsLoading =
+    props.submitBtnCaptionIsLoading || 'Сохранение...';
+  return (
+    <div className={`popup ${props.isOpen ? 'popup_is-opened' : ''}`}>
+      <div className="popup__container">
+        <button
+          onClick={props.onClose}
+          type="button"
+          className="popup__close-btn btn-hover"
+        />
+        <h2 className="popup__title">{props.title}</h2>
+        <form
+          onSubmit={props.onSubmit}
+          name={props.type}
+          className="popup__form"
+          noValidate
+        >
+          {props.children}
 
-class PopupWithForm extends React.Component{
-  
-  render(){
-    return(
-    <section className={`popup ${this.props.isOpen ? 'popup_opened' : ''}`} id={`${this.props.name}-editor`}>
-        <div className="popup__container">
-            <button type="reset" className="popup__close-button" onClick={this.props.onClosePopup}/>
-            <h2 className="popup__title">{this.props.title}</h2>
-            <form className="popup__form" onSubmit={this.props.onSubmit}>
-            {this.props.children}
-            <button type="submit" className="popup__button">{this.props.buttonText}</button>
-            </form>
-        </div>
-    </section> 
-    )
-  }
+          <button type="submit" className="popup__form-submit btn-hover">
+            {props.isLoading
+              ? submitBtnCaptionIsLoading
+              : props.submitBtnCaption}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }
+
 export default PopupWithForm;

@@ -6,6 +6,8 @@ const { CastError } = require('../errors/cast-err');
 const { ExistFieldError } = require('../errors/exist-field-err');
 const { ValidationError } = require('../errors/validation-err');
 
+const signOut = (req, res) => res.clearCookie('jwt').send({ message: 'Куки удалены' });
+
 const login = (req, res, next) => {
   const { email, password } = req.body;
   const { NODE_ENV, JWT_SECRET = 'secret-key', JWT_DEV = 'dev-key' } = process.env;
@@ -44,7 +46,7 @@ const createUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new ValidationError('Переданы некорректные данные при создании пользователя'));
       }
-      if (err.code === 11000) {
+      if (err.name === 'MongoError' && err.code === 11000) {
         next(new ExistFieldError('Email уже существует'));
       } else {
         next(err);
@@ -54,7 +56,7 @@ const createUser = (req, res, next) => {
 
 const getUsers = (req, res, next) => {
   User.find({})
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch(next);
 };
 
@@ -62,9 +64,9 @@ const getMe = (req, res, next) => {
   const userId = req.user._id;
   User.findById(userId)
     .orFail(() => next(new NotFoundError('Пользователь по указанному _id не найден')))
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch((err) => {
-      if (err.name === 'CastError') next(new CastError('Невалидный id пользователя')); else { next(err); }
+      if (err.name === 'CastError') next(new CastError('Невалидный id пользователя'));
     });
 };
 
@@ -95,7 +97,7 @@ const updateProfile = (req, res, next) => {
     },
   )
     .orFail(() => next(new NotFoundError('Пользователь по указанному _id не найден')))
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new CastError('Невалидный id пользователя'));
@@ -118,7 +120,7 @@ const updateAvatar = (req, res, next) => {
     },
   )
     .orFail(() => next(new NotFoundError('Пользователь по указанному _id не найден')))
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new CastError('Невалидный id пользователя'));
@@ -136,4 +138,5 @@ module.exports = {
   updateAvatar,
   login,
   getMe,
+  signOut,
 };

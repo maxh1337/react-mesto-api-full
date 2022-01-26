@@ -1,17 +1,21 @@
 .profile__edit-btn {
-	box-sizing: border-box;
-	padding: 0;
-	min-width: 24px;
-	min-height: 24px;
-	margin-left: 18px;
-	border: 1px solid #fff;
-	background: url("../../../images/icons/pen-edit.svg") no-repeat center;
+  width: 24px;
+  height: 24px;
+  padding: 12px;
+  box-sizing: border-box;
+  display: inline-flex;
+
+  border: 1px solid #ffffff;
+  background-image: url(../../../images/icon-edit.svg);
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-@media (max-width: 425px) {
-	.profile__edit-btn {
-		min-width: 18px;
-		min-height: 18px;
-		margin-left: 10px;
-	}
+@media screen and (max-width: 1000px) {
+  .profile__edit-btn {
+    width: 18px;
+    height: 18px;
+    padding: 9px;
+  }
 }

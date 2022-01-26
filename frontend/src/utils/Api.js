@@ -1,10 +1,13 @@
-import { baseUrl, headers } from "../utils/constants";
+const configAPI = {
+  baseUrl: 'https://api.maxh.student.nomoredomains.rocks',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
-// класс для работы с сервером
- class API {
-
-  constructor(url,headers) {
-    this._url = url;
+class Api {
+  constructor({ baseUrl, headers }) {
+    this._baseUrl = baseUrl;
     this._headers = headers;
   }
 
@@ -12,89 +15,78 @@ import { baseUrl, headers } from "../utils/constants";
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
+    return Promise.reject(`Ошибка ${res.status}`);
   }
-  // метод инициализации карточек
-  getInitialCards() {
-    return fetch(`${this._url}/cards`, {
+
+  getCards() {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
       credentials: 'include',
       headers: this._headers,
-    }).then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
-    // метод инициализации данных пользователя
-  getUserData() {
-    return fetch(`${this._url}/users/me`, {
+  getUserInfo() {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       credentials: 'include',
       headers: this._headers,
-    }).then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
-    // сохранение на сервере отредактированных данных пользователя
-  setUserData({name, about}) {
-    return fetch(`${this._url}/users/me`, {
+  setUserInfo(user) {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       credentials: 'include',
       headers: this._headers,
-      body: JSON.stringify({name, about})
-    }).then(this._checkResponse)
+      body: JSON.stringify({
+        name: user.name,
+        about: user.about,
+      }),
+    }).then(this._checkResponse);
   }
 
-    // добавление на сервере новой карточки
-  postCard(data) {
-    return fetch(`${this._url}/cards`, {
+  createCard(card) {
+    return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
-        name: data.name,
-        link: data.link
-      })
-    }).then(this._checkResponse) 
+        name: card.name,
+        link: card.link,
+      }),
+    }).then(this._checkResponse);
   }
 
-  // метод удаления карточек
-  deleteCard(idCard) {
-    return fetch(`${this._url}/cards/${idCard}`, {
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       credentials: 'include',
       headers: this._headers,
-    }).then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
-  // ставим лайк карточке
-  changeLikeCardStatus(idCard,like){
-    return fetch(`${this._url}/cards/likes/${idCard}`, {
-      method: like ? 'DELETE' : 'PUT',
+  changeLikeCardStatus(cardId, isLiked) {
+    const method = isLiked ? 'PUT' : 'DELETE';
+    return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+      method,
       credentials: 'include',
       headers: this._headers,
-    }).then(this._checkResponse)
+    }).then(this._checkResponse);
   }
 
-  // метод получения данных карточки
-  getCard(idCard) {
-    return fetch(`${this._url}/cards/${idCard}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: this._headers,
-    }).then(this._checkResponse)
-  }
-
-  // метод для обновления аватара пользователя
-  patchAvatar(data) {
-    return fetch(`${this._url}/users/me/avatar`, {
+  setUserAvatar(avatar) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
-        avatar: data.avatar
-      })
-    }).then(this._checkResponse)
+        avatar,
+      }),
+    }).then(this._checkResponse);
   }
 }
 
-// экземпляр класса для работы с сервером
-// API для получение данных
-export const apiData = new API(baseUrl,headers);
+const api = new Api(configAPI);
+
+export default api;

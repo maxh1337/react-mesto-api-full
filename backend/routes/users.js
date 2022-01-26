@@ -8,6 +8,7 @@ const {
   updateProfile,
   updateAvatar,
   getMe,
+  signOut,
 } = require('../controllers/users');
 
 router.patch('/me/avatar', celebrate({
@@ -18,14 +19,16 @@ router.patch('/me/avatar', celebrate({
 
 router.patch('/me', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
+    name: Joi.string().required().min(2),
+    about: Joi.string().required().min(2),
   }),
 }), updateProfile);
 
 router.get('/', getUsers);
 
 router.get('/me', getMe);
+
+router.get('/signout', signOut);
 
 router.get('/:userId', celebrate({
   params: Joi.object().keys({
