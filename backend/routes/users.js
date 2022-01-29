@@ -8,7 +8,6 @@ const {
   updateProfile,
   updateAvatar,
   getMe,
-  signOut,
 } = require('../controllers/users');
 
 router.patch('/me/avatar', celebrate({
@@ -27,8 +26,6 @@ router.patch('/me', celebrate({
 router.get('/', getUsers);
 
 router.get('/me', getMe);
-
-router.get('/signout', signOut);
 
 router.get('/:userId', celebrate({
   params: Joi.object().keys({

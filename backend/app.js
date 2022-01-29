@@ -4,8 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
-
-const { login, createUser } = require('./controllers/users');
+const router = require('express').Router();
+const { login, createUser, signOut } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorsHandler = require('./errors/errorsHandler');
 const { linkRegExp } = require('./utils/utils');
@@ -34,6 +34,8 @@ app.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+
+router.get('/signout', signOut);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
